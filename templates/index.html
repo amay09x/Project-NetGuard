@@ -8,7 +8,8 @@
             text-align: center; 
             background-color: #f4f4f9; 
         }
-        ..container { 
+        /* Fixed the double dot typo here */
+        .container { 
             width: 70%; 
             margin: auto; 
             padding: 30px; 
@@ -56,9 +57,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>NetGuard Threat Dashboard</h1>
+        <h1>🛡️ NetGuard Threat Dashboard</h1>
         
-        <!-- File Upload Section -->
         <div class="upload-box">
             <h3>Upload Server Log for Analysis</h3>
             <form action="/" method="POST" enctype="multipart/form-data">
@@ -67,7 +67,6 @@
             </form>
         </div>
 
-        <!-- This section only shows UP after a file is uploaded -->
         {% if uploaded %}
             {% if threats %}
                 <p>Log analysis complete. Potential threats identified below.</p>
@@ -79,7 +78,6 @@
                         <th>Threat Type</th>
                         <th>Threat Count</th>
                     </tr>
-                    <!-- Loop through the updated python dictionary -->
                     {% for ip, data in threats.items() %}
                     <tr>
                         <td>{{ ip }}</td>
@@ -90,8 +88,7 @@
                 </table>
 
                 <h3>Visual Report</h3>
-                <!-- We add a random number to the image URL so the browser doesn't load an old cached image -->
-                <img src="{{ url_for('static', filename='threat_report.png') }}?rnd={{ range(1, 1000) | random }}" alt="Threat Graph">
+                <img src="/get_report?rnd={{ range(1, 1000) | random }}" alt="Threat Graph">
             
             {% else %}
                 <h3 style="color: green;">✅ No threats detected in this log file!</h3>
