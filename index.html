@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NetGuard Dashboard</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #f4f4f9; 
+        }
+        ..container { 
+            width: 70%; 
+            margin: auto; 
+            padding: 30px; 
+            margin-top: 40px; 
+        }
+        .upload-box {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 2px dashed #ccc;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn:hover { background-color: #0056b3; }
+        img { 
+            max-width: 100%; 
+            height: auto; 
+            margin-top: 20px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px;
+        }
+        table { 
+            margin: auto; 
+            width: 60%; 
+            border-collapse: collapse; 
+            margin-top: 20px; 
+        }
+        th, td { 
+            border: 1px solid black; 
+            padding: 12px; 
+        }
+        th { 
+            background: #d9534f; 
+            color: white; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NetGuard Threat Dashboard</h1>
+        
+        <!-- File Upload Section -->
+        <div class="upload-box">
+            <h3>Upload Server Log for Analysis</h3>
+            <form action="/" method="POST" enctype="multipart/form-data">
+                <input type="file" name="logfile" accept=".log,.txt,.csv" required style="margin-right: 15px;">
+                <button type="submit" class="btn">Analyze File</button>
+            </form>
+        </div>
+
+        <!-- This section only shows UP after a file is uploaded -->
+        {% if uploaded %}
+            {% if threats %}
+                <p>Log analysis complete. Potential threats identified below.</p>
+
+                <h3>Flagged IP Addresses</h3>
+                <table>
+                    <tr>
+                        <th>IP Address</th>
+                        <th>Threat Type</th>
+                        <th>Threat Count</th>
+                    </tr>
+                    <!-- Loop through the updated python dictionary -->
+                    {% for ip, data in threats.items() %}
+                    <tr>
+                        <td>{{ ip }}</td>
+                        <td style="color: #d9534f; font-weight: bold;">{{ data.type }}</td>
+                        <td>{{ data.count }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+
+                <h3>Visual Report</h3>
+                <!-- We add a random number to the image URL so the browser doesn't load an old cached image -->
+                <img src="{{ url_for('static', filename='threat_report.png') }}?rnd={{ range(1, 1000) | random }}" alt="Threat Graph">
+            
+            {% else %}
+                <h3 style="color: green;">✅ No threats detected in this log file!</h3>
+            {% endif %}
+        {% else %}
+            <p style="color: #666;">Please select and upload a log file to view the analysis dashboard.</p>
+        {% endif %}
+
+    </div>
+</body>
+</html>
