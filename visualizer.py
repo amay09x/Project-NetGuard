@@ -29,5 +29,6 @@ class GraphMaker:
         plt.title('Top Network Threats Detected')
         
         # save the image inside the static folder for flask
-        plt.savefig('static/threat_report.png')
+        # Inside visualizer.py change the save line:
+        plt.savefig('/tmp/threat_report.png')
         plt.close()
