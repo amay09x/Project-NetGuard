@@ -2,14 +2,13 @@ from flask import Flask, render_template, request
 from parser import LogParser
 from analyzer import ThreatDetector
 from visualizer import GraphMaker
+# Update these lines in app.py
 import os
 
+UPLOAD_FOLDER = '/tmp'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # initialize flask
 app = Flask(__name__)
-
-# Create an uploads folder to store files temporarily
-if not os.path.exists('uploads'):
-    os.makedirs('uploads')
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
